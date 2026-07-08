@@ -23,7 +23,12 @@ export function ApiGetAllResponseSwagger(
     ApiOkResponse({
       description:
         options.successMessage ?? 'Records have been successfully fetched.',
-      type: ApiResponseDto(entity, { isArray: true }),
+      type: ApiResponseDto(entity, {
+        isArray: true,
+        statusCode: 200,
+        message:
+          options.successMessage ?? 'Records have been successfully fetched.',
+      }),
     }),
     ApiErrorResponses(),
   );

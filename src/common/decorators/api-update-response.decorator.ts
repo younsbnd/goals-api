@@ -23,7 +23,10 @@ export function ApiUpdateResponseSwagger(
     ),
     ApiOperation({ summary: options.summary ?? 'Update a resource by id' }),
     ApiOkResponse({
-      type: ApiResponseDto(entity),
+      type: ApiResponseDto(entity, {
+        statusCode: 200,
+        message: options.successMessage ?? 'Updated successfully',
+      }),
       description: options.successMessage ?? 'Updated successfully',
     }),
     ApiErrorResponses({

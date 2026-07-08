@@ -24,7 +24,11 @@ export function ApiDeleteResponseSwagger(
     ),
     ApiOperation({ summary: options.summary ?? 'Delete a resource by id' }),
     ApiOkResponse({
-      type: ApiResponseDto(entity),
+      description: options.successMessage ?? 'Deleted successfully',
+      type: ApiResponseDto(entity, {
+        statusCode: 200,
+        message: options.successMessage ?? 'Deleted successfully',
+      }),
     }),
     ApiErrorResponses({
       notFoundMessage: options.notFoundMessage ?? 'Resource not found',

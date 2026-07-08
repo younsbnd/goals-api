@@ -25,7 +25,11 @@ export function ApiGetOneResponseSwagger(
     ApiOkResponse({
       description:
         options.successMessage ?? 'Record has been successfully fetched.',
-      type: ApiResponseDto(entity),
+      type: ApiResponseDto(entity, {
+        statusCode: 200,
+        message:
+          options.successMessage ?? 'Record has been successfully fetched.',
+      }),
     }),
     ApiErrorResponses({
       notFoundMessage: options.notFoundMessage ?? 'Resource not found',
