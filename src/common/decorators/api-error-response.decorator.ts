@@ -2,14 +2,18 @@ import { applyDecorators, HttpStatus } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiConflictResponse,
+  ApiForbiddenResponse,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 interface ApiErrorResponseOptions {
   conflictMessage?: string;
   notFoundMessage?: string;
   badRequestMessage?: string;
+  isUnauthorized?: boolean;
+  isForbidden?: boolean;
 }
 
 export function ApiErrorResponses(options: ApiErrorResponseOptions = {}) {
@@ -63,6 +67,34 @@ export function ApiErrorResponses(options: ApiErrorResponseOptions = {}) {
             success: false,
             statusCode: HttpStatus.BAD_REQUEST,
             message: options.badRequestMessage ?? 'Validation failed',
+          },
+        },
+      }),
+    );
+  }
+  if (options.isUnauthorized) {
+    decorators.push(
+      ApiUnauthorizedResponse({
+        description: 'Unauthorized ',
+        schema: {
+          example: {
+            success: false,
+            statusCode: HttpStatus.UNAUTHORIZED,
+            message: 'Unauthorized',
+          },
+        },
+      }),
+    );
+  }
+  if (options.isForbidden) {
+    decorators.push(
+      ApiForbiddenResponse({
+        description: 'Forbidden',
+        schema: {
+          example: {
+            success: false,
+            statusCode: HttpStatus.FORBIDDEN,
+            message: 'Forbidden',
           },
         },
       }),

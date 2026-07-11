@@ -8,6 +8,7 @@ import {
   Delete,
   ParseUUIDPipe,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -19,7 +20,14 @@ import { ApiDeleteResponseSwagger } from 'src/common/decorators/api-delete-respo
 import { ApiGetOneResponseSwagger } from 'src/common/decorators/api-get-one-response.decorator';
 import { ApiUpdateResponseSwagger } from 'src/common/decorators/api-update-response.decorator';
 import { FindAllUsersQueryDto } from './dto/find-all-user.dto';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { UserRole } from '@prisma/client';
+import { ApiCookieAuth } from '@nestjs/swagger';
 
+@UseGuards(RolesGuard)
+@ApiCookieAuth('accessToken')
+@Roles(UserRole.ADMIN)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -30,6 +38,8 @@ export class UsersController {
     successMessage: 'User created successfully',
     badRequestMessage: 'Validation failed',
     conflictMessage: 'User already exists',
+    isUnauthorized: true,
+    isForbidden: true,
   })
   create(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
     return this.usersService.create(createUserDto);
@@ -39,6 +49,8 @@ export class UsersController {
   @ApiGetAllResponseSwagger(UserEntity, {
     summary: 'Get all users',
     successMessage: 'Get all users successfully',
+    isUnauthorized: true,
+    isForbidden: true,
   })
   findAll(@Query() findAllUsersQueryDto: FindAllUsersQueryDto = {}) {
     return this.usersService.findAll(findAllUsersQueryDto || {});
@@ -50,6 +62,8 @@ export class UsersController {
     successMessage: 'Get user by id successfully',
     notFoundMessage: 'User not found',
     badRequestMessage: 'Validation failed',
+    isUnauthorized: true,
+    isForbidden: true,
   })
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.usersService.findOne(id);
@@ -62,6 +76,8 @@ export class UsersController {
     notFoundMessage: 'User not found',
     badRequestMessage: 'Validation failed',
     conflictMessage: 'User already exists',
+    isUnauthorized: true,
+    isForbidden: true,
   })
   update(
     @Param('id', ParseUUIDPipe) id: string,
@@ -76,6 +92,8 @@ export class UsersController {
     successMessage: 'User exists successfully',
     badRequestMessage: 'Validation failed',
     notFoundMessage: 'User not found',
+    isUnauthorized: true,
+    isForbidden: true,
   })
   isUserExists(@Param('phoneNumber') phoneNumber: string) {
     return this.usersService.isUserExists(phoneNumber);
@@ -87,6 +105,8 @@ export class UsersController {
     notFoundMessage: 'User not found',
     badRequestMessage: 'Validation failed',
     conflictMessage: 'User already exists',
+    isUnauthorized: true,
+    isForbidden: true,
   })
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.usersService.remove(id);

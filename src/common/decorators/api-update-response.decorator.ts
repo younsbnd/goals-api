@@ -9,6 +9,8 @@ interface ApiUpdateResponseOptions {
   notFoundMessage: string;
   badRequestMessage: string;
   conflictMessage?: string;
+  isUnauthorized?: boolean;
+  isForbidden?: boolean;
 }
 export const RESPONSE_MESSAGE_KEY = 'response_message';
 
@@ -33,6 +35,8 @@ export function ApiUpdateResponseSwagger(
       notFoundMessage: options.notFoundMessage ?? 'Resource not found',
       badRequestMessage: options.badRequestMessage ?? 'Validation failed',
       conflictMessage: options.conflictMessage ?? 'Resource already exists',
+      isUnauthorized: options.isUnauthorized ? options.isUnauthorized : false,
+      isForbidden: options.isForbidden ? options.isForbidden : false,
     }),
   );
 }

@@ -30,7 +30,7 @@ export class OtpService {
         this.assertCooldownPssed(existingOtp.updatedAt);
       }
 
-      const otpCode = Math.floor(100000 + Math.random() * 900000);
+      const otpCode = this.generateRandomCode();
       const expriesAt = new Date(
         Date.now() + this.EXPIRATION_MINUTES * 60 * 1000,
       );
@@ -104,5 +104,9 @@ export class OtpService {
         `Please try again in ${remainingSeconds} seconds`,
       );
     }
+  }
+
+  generateRandomCode(): number {
+    return Math.floor(100000 + Math.random() * 900000);
   }
 }

@@ -12,6 +12,8 @@ interface ApiCreateResponseSwaggerOptions {
   successMessage: string;
   conflictMessage?: string;
   badRequestMessage: string;
+  isUnauthorized?: boolean;
+  isForbidden?: boolean;
   statusCode?: number;
 }
 
@@ -41,6 +43,8 @@ export function ApiCreateResponseSwagger(
       conflictMessage: options.conflictMessage
         ? options.conflictMessage
         : undefined,
+      isUnauthorized: options.isUnauthorized ? options.isUnauthorized : false,
+      isForbidden: options.isForbidden ? options.isForbidden : false,
     }),
   );
 }
