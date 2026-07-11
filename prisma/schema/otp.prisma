@@ -1,0 +1,16 @@
+enum OtpType {
+    LOGIN
+    REGISTER
+}
+
+model Otp {
+    id          String   @id @default(uuid(7)) @db.Uuid
+    phoneNumber String   @unique @map("phone_number")
+    code        String
+    type        OtpType
+    expriesAt   DateTime @map("expires_at")
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
+
+    @@map("otp_codes")
+}

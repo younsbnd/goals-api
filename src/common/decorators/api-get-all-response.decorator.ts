@@ -6,6 +6,8 @@ import { ApiErrorResponses } from './api-error-response.decorator';
 interface ApiGetAllResponseOptions {
   summary: string;
   successMessage: string;
+  isUnauthorized?: boolean;
+  isForbidden?: boolean;
 }
 
 const RESPONSE_MESSAGE_KEY = 'response_message';
@@ -23,8 +25,16 @@ export function ApiGetAllResponseSwagger(
     ApiOkResponse({
       description:
         options.successMessage ?? 'Records have been successfully fetched.',
-      type: ApiResponseDto(entity, { isArray: true }),
+      type: ApiResponseDto(entity, {
+        isArray: true,
+        statusCode: 200,
+        message:
+          options.successMessage ?? 'Records have been successfully fetched.',
+      }),
     }),
-    ApiErrorResponses(),
+    ApiErrorResponses({
+      isUnauthorized: options.isUnauthorized ? options.isUnauthorized : false,
+      isForbidden: options.isForbidden ? options.isForbidden : false,
+    }),
   );
 }

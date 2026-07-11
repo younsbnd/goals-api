@@ -8,6 +8,8 @@ interface ApiGetOneResponseOptions {
   successMessage: string;
   notFoundMessage: string;
   badRequestMessage: string;
+  isUnauthorized?: boolean;
+  isForbidden?: boolean;
 }
 
 const RESPONSE_MESSAGE_KEY = 'response_message';
@@ -25,11 +27,17 @@ export function ApiGetOneResponseSwagger(
     ApiOkResponse({
       description:
         options.successMessage ?? 'Record has been successfully fetched.',
-      type: ApiResponseDto(entity),
+      type: ApiResponseDto(entity, {
+        statusCode: 200,
+        message:
+          options.successMessage ?? 'Record has been successfully fetched.',
+      }),
     }),
     ApiErrorResponses({
       notFoundMessage: options.notFoundMessage ?? 'Resource not found',
       badRequestMessage: options.badRequestMessage ?? 'Validation failed',
+      isUnauthorized: options.isUnauthorized ? options.isUnauthorized : false,
+      isForbidden: options.isForbidden ? options.isForbidden : false,
     }),
   );
 }

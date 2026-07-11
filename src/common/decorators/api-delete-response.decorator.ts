@@ -9,6 +9,8 @@ interface ApiDeleteResponseSwaggerOptions {
   notFoundMessage: string;
   badRequestMessage: string;
   conflictMessage: string;
+  isUnauthorized?: boolean;
+  isForbidden?: boolean;
 }
 
 const RESPONSE_MESSAGE_KEY = 'response_message';
@@ -24,12 +26,18 @@ export function ApiDeleteResponseSwagger(
     ),
     ApiOperation({ summary: options.summary ?? 'Delete a resource by id' }),
     ApiOkResponse({
-      type: ApiResponseDto(entity),
+      description: options.successMessage ?? 'Deleted successfully',
+      type: ApiResponseDto(entity, {
+        statusCode: 200,
+        message: options.successMessage ?? 'Deleted successfully',
+      }),
     }),
     ApiErrorResponses({
       notFoundMessage: options.notFoundMessage ?? 'Resource not found',
       badRequestMessage: options.badRequestMessage ?? 'Validation failed',
       conflictMessage: options.conflictMessage ?? 'Resource already exists',
+      isUnauthorized: options.isUnauthorized ? options.isUnauthorized : false,
+      isForbidden: options.isForbidden ? options.isForbidden : false,
     }),
   );
 }

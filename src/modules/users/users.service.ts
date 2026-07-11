@@ -15,7 +15,10 @@ export class UsersService {
   async create(createUserDto: CreateUserDto) {
     try {
       return await this.prismaService.user.create({
-        data: createUserDto,
+        data: {
+          phoneNumber: createUserDto.phoneNumber,
+          displayName: createUserDto.displayName,
+        },
       });
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -25,6 +28,23 @@ export class UsersService {
       }
       throw error;
     }
+  }
+
+  async findOrCreateUser(createUserDto: CreateUserDto) {
+    const existingUesr = await this.prismaService.user.findUnique({
+      where: { phoneNumber: createUserDto.phoneNumber },
+    });
+
+    if (existingUesr) {
+      return existingUesr;
+    }
+
+    return await this.prismaService.user.create({
+      data: {
+        phoneNumber: createUserDto.phoneNumber,
+        displayName: createUserDto.displayName,
+      },
+    });
   }
 
   async findAll(findAllUsersQueryDto: FindAllUsersQueryDto) {
