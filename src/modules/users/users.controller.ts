@@ -104,7 +104,6 @@ export class UsersController {
     summary: 'Delete a user by id',
     notFoundMessage: 'User not found',
     badRequestMessage: 'Validation failed',
-    conflictMessage: 'User already exists',
     isUnauthorized: true,
     isForbidden: true,
   })

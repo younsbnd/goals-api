@@ -8,7 +8,6 @@ interface ApiDeleteResponseSwaggerOptions {
   successMessage?: string;
   notFoundMessage: string;
   badRequestMessage: string;
-  conflictMessage: string;
   isUnauthorized?: boolean;
   isForbidden?: boolean;
 }
@@ -34,8 +33,7 @@ export function ApiDeleteResponseSwagger(
     }),
     ApiErrorResponses({
       notFoundMessage: options.notFoundMessage ?? 'Resource not found',
-      badRequestMessage: options.badRequestMessage ?? 'Validation failed',
-      conflictMessage: options.conflictMessage ?? 'Resource already exists',
+      badRequestMessage: options.badRequestMessage ?? 'Validation failed ',
       isUnauthorized: options.isUnauthorized ? options.isUnauthorized : false,
       isForbidden: options.isForbidden ? options.isForbidden : false,
     }),

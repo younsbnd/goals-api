@@ -1,0 +1,16 @@
+model GoalCategory {
+    id String @id @default(uuid(7)) @db.Uuid
+
+    userId String @map("user_id") @db.Uuid
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    title String
+    color String?
+    icon  String?
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt
+
+    @@index([userId, createdAt])
+    @@map("goal_categories")
+}

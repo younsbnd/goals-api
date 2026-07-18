@@ -6,6 +6,7 @@ import { OtpModule } from './modules/otp/otp.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAccessGuard } from './modules/auth/guards/jwt-access.guard';
+import { GoalCategoryModule } from './modules/goal-categories/goal-category.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { JwtAccessGuard } from './modules/auth/guards/jwt-access.guard';
     UsersModule,
     OtpModule,
     AuthModule,
+    GoalCategoryModule,
   ],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: JwtAccessGuard }],
