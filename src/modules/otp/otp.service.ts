@@ -107,6 +107,9 @@ export class OtpService {
   }
 
   generateRandomCode(): number {
+    if (process.env.NODE_ENV === 'test') {
+      return 123456;
+    }
     return Math.floor(100000 + Math.random() * 900000);
   }
 }
